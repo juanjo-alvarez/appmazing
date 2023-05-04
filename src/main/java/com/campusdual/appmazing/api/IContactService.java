@@ -10,4 +10,5 @@ public interface IContactService {
     int insertContact(ContactDto contactDTO);
     int updateContact(ContactDto contactDTO);
     int deleteContact(ContactDto contactDTO);
+    int updateSecureContact(ContactDto contactDTO);
 }

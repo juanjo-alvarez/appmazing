@@ -9,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service("ContractService")
 @Lazy
-public class ContractService implements IContactService {
+public class ContactService implements IContactService {
 
     @Autowired
     private ContactDao contactDao;
@@ -46,5 +47,30 @@ public class ContractService implements IContactService {
         Contact contact = ContactMapper.INSTANCE.toEntity(contactDTO);
         contactDao.delete(contact);
         return contact.getId();
+    }
+
+    @Override
+    public int updateSecureContact(ContactDto newContact) {
+        try{
+            ContactDto oldContact = ContactMapper.INSTANCE.toDTO(contactDao.getReferenceById(newContact.getId()));
+            if(newContact.getName()!=null){
+                oldContact.setName(newContact.getName());
+            }
+            if(newContact.getSurname()!=null){
+                oldContact.setSurname(newContact.getSurname());
+            }
+            if(newContact.getSurname2()!=null){
+                oldContact.setSurname2(newContact.getSurname2());
+            }
+            if(newContact.getEmail()!=null){
+                oldContact.setEmail(newContact.getEmail());
+            }
+            if(newContact.getTelephone()!=null){
+                oldContact.setTelephone(newContact.getTelephone());
+            }
+            return updateContact(oldContact);
+        }catch (EntityNotFoundException e){
+            return -1;
+        }
     }
 }

@@ -34,6 +34,12 @@ public class ContactController {
         return contactService.updateContact(contact);
     }
 
+    //Hace un update solo de aquellos campos no vacíos
+    @PutMapping(value = "/secureupdate")
+    public int secureUpdateContact(@RequestBody ContactDto contact){
+        return contactService.updateSecureContact(contact);
+    }
+
     @DeleteMapping(value = "/delete")
     public int deleteContact(@RequestBody ContactDto contact){
         return contactService.deleteContact(contact);
